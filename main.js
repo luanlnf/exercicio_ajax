@@ -1,25 +1,30 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
-    $(document).ready(function() {
-        const endpoint = 'https://api.github.com/users/luanlnf';
-    
-        // Faz a requisição AJAX com jQuery
-        $.ajax(endpoint)
-            .done(function(resposta) {
-                // Seleciona os elementos da página
-                $('#fotoUsuario').attr('src', resposta.avatar_url);
-                $('#nomeReal').text(resposta.name);
-                $('#nomeUsuario').text(resposta.login);
-                $('#repositorios').text(resposta.public_repos);
-                $('#seguidor').text(resposta.followers);
-                $('#seguindos').text(resposta.following);
-                $('#link').attr('href', resposta.html_url);
-            })
-            .fail(function() {
-                // Caso ocorra um erro na requisição
-                alert('Erro ao carregar as informações da API.');
-            });
-    });
+    const fotoElemento = document.querySelector('#fotoUsuario');
+    const nomeElemento = document.querySelector('#nomeReal');
+    const nomeUsuarioElemento = document.querySelector('#nomeUsuario');
+    const RepositorioElemento = document.querySelector('#repositorios');
+    const seguidorElemento = document.querySelector('#seguidor');
+    const seguirElemento = document.querySelector('#seguindos');
+    const linkElemento = document.querySelector('#link');
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://api.github.com/users/luanlnf', true);
+
+    xhr.onload = function () {
+        // O método 'onload' é chamado quando a requisição está completa
+        const json = JSON.parse(xhr.responseText);
+        
+        // Atualizando os elementos da página
+        fotoElemento.src = json.avatar_url;
+        nomeElemento.innerText = json.name;
+        nomeUsuarioElemento.innerText = json.login;
+        RepositorioElemento.innerText = json.public_repos;
+        seguidorElemento.innerText = json.followers;
+        seguirElemento.innerText = json.following;
+        linkElemento.href = json.html_url;
+    };
+
+    // Envia a requisição
+    xhr.send();
 });
 
 
